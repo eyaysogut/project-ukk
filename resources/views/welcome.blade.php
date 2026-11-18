@@ -3,175 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NusaRasa — Jasa Pembuatan Web Kuliner UMKM</title>
+    <title>NusaRasa — Platform Web Portofolio UMKM</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <style> 
-        body { font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        html { scroll-behavior: smooth; }
+        .bg-brand { background-color: #059669; }
+        .text-brand { color: #059669; }
+        .hover-lift { transition: transform .3s ease, box-shadow .3s ease; }
+        .hover-lift:hover { transform: translateY(-6px); box-shadow: 0 22px 30px -12px rgba(0,0,0,.15); }
     </style>
 </head>
-<body class="bg-white text-gray-700 overflow-x-hidden">
+<body class="bg-white text-slate-800 flex flex-col min-h-screen">
 
-    <!-- ================= NAVBAR ================= -->
-    <nav class="fixed w-full top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100">
-        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-            <!-- Logo -->
-            <div class="flex items-center gap-2">
-                <div class="bg-emerald-600 text-white p-2 rounded-lg">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-                </div>
-                <span class="text-xl font-bold text-gray-800 tracking-tight">NusaRasa</span>
+    <!-- NAVBAR -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+            <a href="#beranda" class="flex items-center gap-2">
+                <span class="w-9 h-9 bg-brand rounded-lg flex items-center justify-center text-white text-lg"><i class="fa-solid fa-store"></i></span>
+                <span class="text-xl font-extrabold text-slate-900">NusaRasa</span>
+            </a>
+            <div class="hidden md:flex gap-7 text-sm font-medium text-slate-600">
+                <a href="#beranda" class="hover:text-brand transition">Beranda</a>
+                <a href="#keunggulan" class="hover:text-brand transition">Keunggulan</a>
+                <a href="#carakerja" class="hover:text-brand transition">Cara Kerja</a>
+                <a href="#template" class="hover:text-brand transition">Template</a>
             </div>
-            
-            <!-- Menu Navigasi -->
-            <div class="hidden md:flex space-x-8 text-sm font-semibold text-gray-600">
-                <a href="#beranda" class="hover:text-emerald-600 transition">Beranda</a>
-                <a href="#keunggulan" class="hover:text-emerald-600 transition">Keunggulan</a>
-                <a href="#cara-kerja" class="hover:text-emerald-600 transition">Cara Kerja</a>
-                <a href="#template" class="hover:text-emerald-600 transition">Template</a>
-            </div>
+            <span class="hidden lg:block text-xs text-slate-400 font-medium">Platform Digital UMKM</span>
         </div>
     </nav>
 
-    <!-- ================= HERO SECTION ================= -->
-    <header id="beranda" class="relative pt-36 pb-20 px-6 min-h-screen flex items-center justify-center overflow-hidden">
-        <!-- Hiasan Background (Nuansa Hijau) -->
-        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-50 rounded-full blur-3xl opacity-60 -z-10 translate-x-1/3 -translate-y-1/4"></div>
-        <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-teal-50 rounded-full blur-3xl opacity-60 -z-10 -translate-x-1/4 translate-y-1/4"></div>
-
-        <div class="max-w-4xl mx-auto text-center relative z-10">
-            <!-- Badge -->
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs md:text-sm font-semibold mb-6 shadow-sm">
-                <span class="text-lg">👨‍🍳</span> Layanan Website Kuliner UMKM
-            </div>
-
-            <!-- Judul Utama -->
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-800 leading-tight mb-6">
-                Bikin Website Kuliner <br class="hidden md:block"> 
-                <span class="text-emerald-600">Tanpa Ribet</span>, Terima Beres!
+    <!-- HERO -->
+    <header id="beranda" class="bg-gradient-to-b from-emerald-50 to-white py-16 sm:py-24 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <span class="inline-block bg-emerald-100 text-brand text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full mb-6">Model Layanan Done-For-You</span>
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 leading-tight mb-6">
+                Wujudkan Website UMKM<br>
+                <span class="text-brand">Tanpa Ribet, Terima Beres!</span>
             </h1>
-
-            <!-- Deskripsi -->
-            <p class="text-base md:text-lg text-gray-500 mb-10 max-w-2xl mx-auto leading-relaxed">
-                Kami bantu UMKM kuliner punya website profesional dalam hitungan hari. 
-                Kamu cukup kirim data & menu — tim kami yang urus semuanya.
+            <p class="text-slate-500 text-base sm:text-lg max-w-2xl mx-auto mb-9 px-2">
+                NusaRasa membantu pelaku usaha memiliki website portofolio profesional dalam hitungan menit. Cukup kirimkan data usaha melalui WhatsApp, tim kami yang akan mengelola sisanya.
             </p>
-
-            <!-- Tombol CTA -->
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="#template" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-8 py-4 rounded-full shadow-lg shadow-emerald-600/30 transition flex items-center justify-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                    Lihat Template
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#template" class="inline-flex items-center justify-center gap-2 bg-brand hover:bg-emerald-700 text-white font-semibold px-7 py-3.5 rounded-xl shadow-lg shadow-emerald-600/30 transition">
+                    <i class="fa-solid fa-table-cells"></i> Lihat Pilihan Template
                 </a>
-                <a href="https://wa.me/6281234567890" target="_blank" class="bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 font-semibold px-8 py-4 rounded-full shadow-sm transition flex items-center justify-center gap-2">
-                    <svg class="w-5 h-5 text-emerald-500" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-                    Konsultasi Gratis
+                <a href="#carakerja" class="inline-flex items-center justify-center gap-2 border-2 border-brand text-brand hover:bg-emerald-50 font-semibold px-7 py-3.5 rounded-xl transition">
+                    <i class="fa-solid fa-circle-play"></i> Pelajari Cara Kerja
                 </a>
             </div>
         </div>
     </header>
 
-    <!-- ================= KEUNGGULAN ================= -->
-    <section id="keunggulan" class="py-24 bg-gray-50">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold text-gray-800 mb-4">Kenapa Pilih NusaRasa?</h2>
-                <p class="text-gray-500 max-w-2xl mx-auto">Kami memberikan kemudahan bagi pelaku UMKM untuk go-digital tanpa perlu pusing memikirkan teknis.</p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-white p-8 rounded-2xl shadow-sm text-center hover:shadow-md transition">
-                    <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl">⚡</div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-3">Proses Cepat</h3>
-                    <p class="text-gray-500 text-sm">Website UMKM Anda bisa selesai dan tayang hanya dalam hitungan hari kerja.</p>
-                </div>
-                <div class="bg-white p-8 rounded-2xl shadow-sm text-center hover:shadow-md transition">
-                    <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl">🎨</div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-3">Desain Modern</h3>
-                    <p class="text-gray-500 text-sm">Template profesional yang sudah dioptimalkan untuk tampilan HP maupun laptop.</p>
-                </div>
-                <div class="bg-white p-8 rounded-2xl shadow-sm text-center hover:shadow-md transition">
-                    <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl">🛠️</div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-3">Done-For-You</h3>
-                    <p class="text-gray-500 text-sm">Anda tidak perlu belajar coding. Cukup kirim data, admin kami yang input semuanya.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    <!-- KEUNGGULAN -->
+    <section id="keunggulan" class="py-16 sm:py-20 px-4">
+        <div class="max-w-6xl mx-auto text-center">
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-3">Mengapa Memilih NusaRasa?</h2>
+            <p class="text-slate-500 mb-2">Solusi digitalisasi UMKM yang dirancang sederhana, cepat, dan profesional.</p>
+            <div class="w-16 h-1 bg-brand rounded-full mx-auto mb-12"></div>
 
-    <!-- ================= CARA KERJA ================= -->
-    <section id="cara-kerja" class="py-24 bg-white">
-        <div class="max-w-4xl mx-auto px-6 text-center">
-            <h2 class="text-3xl font-bold text-gray-800 mb-16">Cara Kerja Kami</h2>
-            
-            <div class="flex flex-col md:flex-row justify-center gap-8 relative">
-                <div class="hidden md:block absolute top-8 left-1/4 right-1/4 h-0.5 bg-gray-200 -z-10"></div>
-                
-                <div class="flex-1">
-                    <div class="w-16 h-16 bg-emerald-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold shadow-lg shadow-emerald-600/30">1</div>
-                    <h4 class="font-bold text-gray-800 mb-2">Hubungi Kami</h4>
-                    <p class="text-sm text-gray-500">Konsultasikan kebutuhan website UMKM Anda via WhatsApp.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+                <div class="bg-white border border-slate-100 rounded-2xl p-8 shadow-sm hover-lift">
+                    <div class="w-14 h-14 rounded-xl bg-emerald-100 flex items-center justify-center text-brand text-2xl mb-5"><i class="fa-solid fa-bolt"></i></div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Pengerjaan Cepat</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed">Website portofolio satu halaman siap tayang dalam hitungan menit setelah data usaha diterima oleh admin.</p>
                 </div>
-                <div class="flex-1">
-                    <div class="w-16 h-16 bg-emerald-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold shadow-lg shadow-emerald-600/30">2</div>
-                    <h4 class="font-bold text-gray-800 mb-2">Kirim Data</h4>
-                    <p class="text-sm text-gray-500">Kirim nama usaha, bio, foto, dan nomor WA yang ingin ditampilkan.</p>
+                <div class="bg-white border border-slate-100 rounded-2xl p-8 shadow-sm hover-lift">
+                    <div class="w-14 h-14 rounded-xl bg-emerald-100 flex items-center justify-center text-brand text-2xl mb-5"><i class="fa-solid fa-laptop-code"></i></div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Responsif &amp; Modern</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed">Tampilan menyesuaikan semua perangkat, dari smartphone pelanggan hingga desktop.</p>
                 </div>
-                <div class="flex-1">
-                    <div class="w-16 h-16 bg-emerald-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold shadow-lg shadow-emerald-600/30">3</div>
-                    <h4 class="font-bold text-gray-800 mb-2">Website Tayang</h4>
-                    <p class="text-sm text-gray-500">Kami input datanya dan website Anda siap dibagikan ke pelanggan!</p>
+                <div class="bg-white border border-slate-100 rounded-2xl p-8 shadow-lg md:-translate-y-4">
+                    <div class="w-14 h-14 rounded-xl bg-emerald-100 flex items-center justify-center text-brand text-2xl mb-5"><i class="fa-solid fa-link"></i></div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">URL Unik &amp; Mudah Diingat</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed">Setiap UMKM mendapatkan alamat website khusus (slug) yang mudah dibagikan ke pelanggan.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ================= TEMPLATE ================= -->
-    <section id="template" class="py-24 bg-gray-50 border-t border-gray-100">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold mb-4 text-gray-800">Pilih Desain Website-mu</h2>
-                <p class="text-gray-500">Template modern yang siap membuat usahamu terlihat lebih profesional.</p>
-            </div>
+    <!-- CARA KERJA -->
+    <section id="carakerja" class="bg-gradient-to-b from-emerald-50 to-white py-16 sm:py-20 px-4">
+        <div class="max-w-3xl mx-auto text-center">
+            <span class="inline-block bg-emerald-100 text-brand text-xs font-bold tracking-widest uppercase px-4 py-1 rounded-full mb-4">Proses</span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-3">Cara Kerja Sederhana</h2>
+            <p class="text-slate-500 mb-2">Tiga langkah mudah untuk memiliki website portofolio profesional.</p>
+            <div class="w-16 h-1 bg-brand rounded-full mx-auto mb-12"></div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Card Template 1 -->
-                <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
-                    <div class="h-56 bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center relative">
-                        <span class="text-white font-bold text-2xl opacity-80">Theme: Kuliner Sehat</span>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">Template Hijau (Kuliner)</h3>
-                        <p class="text-gray-500 text-sm mb-4">Cocok untuk usaha katering, kue, dan makanan sehat. Nuansa segar dan natural.</p>
-                        <a href="/kue-enak-bu-sri" target="_blank" class="inline-block text-emerald-600 font-semibold hover:underline">Lihat Demo &rarr;</a>
+            <div class="space-y-5 text-left">
+                <div class="bg-white rounded-2xl p-6 shadow-sm flex items-start gap-5">
+                    <div class="w-12 h-12 shrink-0 rounded-xl bg-brand text-white text-xl font-bold flex items-center justify-center">1</div>
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-1">UMKM Kirim Data via WhatsApp</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed">Pengusaha cukup mengirimkan foto, deskripsi usaha, daftar produk, dan kontak melalui WhatsApp ke Admin NusaRasa.</p>
                     </div>
                 </div>
-
-                <!-- Card Template 2 -->
-                <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
-                    <div class="h-56 bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center relative">
-                        <span class="text-white font-bold text-2xl opacity-80">Theme: Kopi & Cafe</span>
+                <div class="bg-white rounded-2xl p-6 shadow-sm flex items-start gap-5">
+                    <div class="w-12 h-12 shrink-0 rounded-xl bg-brand text-white text-xl font-bold flex items-center justify-center">2</div>
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-1">Admin Input &amp; Pilih Template</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed">Tim admin menginput data ke dashboard, memilih template yang sesuai, dan melakukan validasi slug sebelum menerbitkan.</p>
                     </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">Template Teal (Cafe)</h3>
-                        <p class="text-gray-500 text-sm mb-4">Cocok untuk coffee shop, minuman, dan tempat nongkrong. Tampilan elegan.</p>
-                        <a href="#" class="inline-block text-teal-600 font-semibold hover:underline">Lihat Demo &rarr;</a>
+                </div>
+                <div class="bg-white rounded-2xl p-6 shadow-sm flex items-start gap-5">
+                    <div class="w-12 h-12 shrink-0 rounded-xl bg-brand text-white text-xl font-bold flex items-center justify-center">3</div>
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-1">Website Langsung Live</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed">Setelah di-publish, halaman portofolio langsung bisa diakses publik melalui URL/slug unik yang diberikan.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ================= FOOTER ================= -->
-    <footer class="bg-gray-800 text-gray-400 py-12 text-center text-sm">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="flex justify-center items-center gap-2 mb-6">
-                <div class="bg-gray-700 text-white p-1.5 rounded-md">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+    <!-- TEMPLATE -->
+    <section id="template" class="py-16 sm:py-20 px-4">
+        <div class="max-w-5xl mx-auto text-center">
+            <span class="inline-block bg-emerald-100 text-brand text-xs font-bold tracking-widest uppercase px-4 py-1 rounded-full mb-4">Koleksi</span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-3">Pilihan Template Eksklusif</h2>
+            <p class="text-slate-500 mb-2">Desain modern yang siap menaikkan citra brand UMKM Anda.</p>
+            <div class="w-16 h-1 bg-brand rounded-full mx-auto mb-12"></div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+                <!-- Template 1 -->
+                <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover-lift">
+                    <div class="h-48 bg-gradient-to-br from-red-900 via-red-800 to-amber-200 flex items-center justify-center">
+                        <span class="text-white font-bold text-2xl drop-shadow">Theme: Kue &amp; Camilan</span>
+                    </div>
+                    <div class="p-7">
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Template Marun</h3>
+                        <p class="text-slate-500 text-sm mb-5 leading-relaxed">Cocok untuk toko kue, minuman, dan camilan. Nuansa hangat dengan paduan merah marun dan krem yang elegan.</p>
+                        <a href="{{ url('/template1') }}" target="_blank" class="inline-flex items-center gap-2 text-red-700 font-semibold hover:gap-3 transition-all">Lihat Demo <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
                 </div>
-                <span class="text-lg font-bold text-white tracking-tight">NusaRasa</span>
+                <!-- Template 2 -->
+                <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover-lift">
+                    <div class="h-48 bg-gradient-to-br from-red-600 via-orange-500 to-yellow-400 flex items-center justify-center">
+                        <span class="text-white font-bold text-2xl drop-shadow">Theme: Fast Food &amp; Burger</span>
+                    </div>
+                    <div class="p-7">
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Template Merah Kuning</h3>
+                        <p class="text-slate-500 text-sm mb-5 leading-relaxed">Cocok untuk burger, ayam goreng, dan jajan cepat saji. Tampilan berani dan menggugah selera pelanggan.</p>
+                        <a href="{{ url('/template2') }}" target="_blank" class="inline-flex items-center gap-2 text-red-700 font-semibold hover:gap-3 transition-all">Lihat Demo <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
             </div>
-            <p>&copy; {{ date('Y') }} NusaRasa. Dibuat untuk UKK Reyal 12 RPL 2.</p>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="bg-gradient-to-r from-emerald-600 to-teal-700 py-16 sm:py-20 px-4">
+        <div class="max-w-3xl mx-auto text-center text-white">
+            <h2 class="text-3xl sm:text-4xl font-extrabold mb-4">Siap Memiliki Website UMKM?</h2>
+            <p class="text-emerald-100 mb-8 max-w-xl mx-auto">Bergabunglah dengan para pelaku usaha yang telah mempercayakan digitalisasi bisnis mereka kepada NusaRasa.</p>
+            <a href="#carakerja" class="inline-flex items-center gap-2 bg-white text-brand font-bold px-8 py-4 rounded-xl shadow-xl hover:bg-emerald-50 transition">
+                <i class="fa-solid fa-rocket"></i> Mulai Sekarang
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-300 py-12 px-4 mt-auto">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-2">
+                    <span class="w-9 h-9 bg-brand rounded-lg flex items-center justify-center text-white text-lg"><i class="fa-solid fa-store"></i></span>
+                    <span class="text-xl font-extrabold text-white">NusaRasa</span>
+                </div>
+                <div class="flex gap-6 text-sm">
+                    <a href="#beranda" class="hover:text-white transition">Beranda</a>
+                    <a href="#keunggulan" class="hover:text-white transition">Keunggulan</a>
+                    <a href="#carakerja" class="hover:text-white transition">Cara Kerja</a>
+                    <a href="#template" class="hover:text-white transition">Template</a>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 mt-8 pt-6 text-center text-sm text-slate-500">
+                &copy; {{ date('Y') }} NusaRasa Platform. Dibuat untuk Ujian Kompetensi Keahlian Rekayasa Perangkat Lunak.
+            </div>
         </div>
     </footer>
 

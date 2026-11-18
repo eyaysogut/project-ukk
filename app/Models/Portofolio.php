@@ -2,13 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Portofolio extends Model
 {
-    use HasFactory;
-
     protected $table = 'portofolios';
 
     protected $fillable = [
@@ -19,20 +16,16 @@ class Portofolio extends Model
         'no_wa',
         'produk_unggulan',
         'status',
+        'template',
     ];
 
-    public function scopePublish($query)
+    public function produks()
     {
-        return $query->where('status', 'publish');
+        return $this->hasMany(Produk::class, 'portofolio_id');
     }
 
-    public function scopeDraft($query)
+    public function testimonials()
     {
-        return $query->where('status', 'draft');
-    }
-
-    public function logs()
-    {
-        return $this->hasMany(LogActivity::class, 'portfolio_id');
+        return $this->hasMany(Testimonial::class, 'portofolio_id');
     }
 }

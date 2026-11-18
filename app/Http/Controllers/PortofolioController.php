@@ -3,107 +3,108 @@
 namespace App\Http\Controllers;
 
 use App\Models\Portofolio;
+use App\Models\Produk;
+use App\Models\Testimonial;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 
 class PortofolioController extends Controller
 {
     public function index()
     {
-        $portofolios = Portofolio::orderByDesc('created_at')->paginate(10);
-        return view('Admin.index', compact('portofolios'));
+        $portofolios = Portofolio::with(['produks', 'testimonials'])->latest()->get();
+        $totalUmkm = Portofolio::count();
+        return view('Admin.admin', compact('portofolios', 'totalUmkm'));
     }
 
-    public function create()
-    {
-        return view('Admin.create_portofolio');
-    }
+    public function create() { return view('Admin.create_portofolio'); }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama_usaha'      => 'required|string|max:255',
-            'slug'            => 'required|string|max:255|unique:portofolios,slug|regex:/^[a-z0-9-]+$/',
-            'bio'             => 'nullable|string',
-            'foto'            => 'nullable|image|max:2048',
-            'no_wa'           => 'nullable|string|max:20',
-            'produk_unggulan' => 'nullable|string|max:255',
-            'status'          => 'required|in:draft,publish',
-        ], [
-            'slug.unique' => 'Slug sudah dipakai. Pilih slug lain.',
-            'slug.regex'  => 'Slug hanya boleh huruf kecil, angka, dan tanda hubung (-).',
-            'slug.required' => 'Slug wajib diisi.',
+            'nama_usaha' => 'required|string|max:255', 'no_wa' => 'required|string|max:20',
+            'bio' => 'nullable|string', 'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'slug' => 'required|string|unique:portofolios,slug', 'status' => 'required|in:publish,draft', 'template' => 'nullable|string',
         ]);
 
-        $validated['slug'] = Str::slug($validated['slug']);
+        if ($request->hasFile('foto')) $validated['foto'] = $request->file('foto')->store('portofolios', 'public');
+        $portofolio = Portofolio::create($validated);
 
-        if ($request->hasFile('foto')) {
-            $path = $request->file('foto')->store('umkm', 'public');
-            $validated['foto'] = $path;
+        // Simpan Produk
+        if ($request->has('produk_nama')) {
+            foreach ($request->produk_nama as $index => $namaProduk) {
+                if (!empty($namaProduk)) {
+                    $data = ['portofolio_id' => $portofolio->id, 'nama' => $namaProduk, 'harga' => $request->produk_harga[$index] ?? 0, 'deskripsi' => $request->produk_deskripsi[$index] ?? null];
+                    if ($request->hasFile("produk_foto_$index")) $data['foto'] = $request->file("produk_foto_$index")->store('produk', 'public');
+                    Produk::create($data);
+                }
+            }
         }
 
-        Portofolio::create($validated);
-
-        return redirect()->route('admin.portofolio.index')->with('success', 'Portofolio berhasil ditambahkan.');
+        // Simpan Testimoni
+        if ($request->has('testimoni_nama')) {
+            foreach ($request->testimoni_nama as $index => $namaPelanggan) {
+                if (!empty($namaPelanggan)) {
+                    $data = ['portofolio_id' => $portofolio->id, 'nama_pelanggan' => $namaPelanggan, 'jabatan' => $request->testimoni_jabatan[$index] ?? null, 'rating' => $request->testimoni_rating[$index] ?? 5, 'komentar' => $request->testimoni_komentar[$index] ?? ''];
+                    if ($request->hasFile("testimoni_foto_$index")) $data['foto'] = $request->file("testimoni_foto_$index")->store('testimoni', 'public');
+                    Testimonial::create($data);
+                }
+            }
+        }
+        return redirect()->route('admin.portofolio.index')->with('success', 'Data berhasil disimpan!');
     }
 
-    public function edit(Portofolio $portofolio)
+    public function edit($id)
     {
+        $portofolio = Portofolio::with(['produks', 'testimonials'])->findOrFail($id);
         return view('Admin.edit_portofolio', compact('portofolio'));
     }
 
-    public function update(Request $request, Portofolio $portofolio)
+    public function update(Request $request, $id)
     {
+        $portofolio = Portofolio::findOrFail($id);
         $validated = $request->validate([
-            'nama_usaha'      => 'required|string|max:255',
-            'slug'            => [
-                'required', 'string', 'max:255', 'regex:/^[a-z0-9-]+$/',
-                Rule::unique('portofolios', 'slug')->ignore($portofolio->id),
-            ],
-            'bio'             => 'nullable|string',
-            'foto'            => 'nullable|image|max:2048',
-            'no_wa'           => 'nullable|string|max:20',
-            'produk_unggulan' => 'nullable|string|max:255',
-            'status'          => 'required|in:draft,publish',
-        ], [
-            'slug.unique' => 'Slug sudah dipakai portofolio lain.',
-            'slug.regex'  => 'Slug hanya boleh huruf kecil, angka, dan tanda hubung (-).',
+            'nama_usaha' => 'required|string|max:255', 'no_wa' => 'required|string|max:20',
+            'bio' => 'nullable|string', 'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'slug' => 'required|string|unique:portofolios,slug,' . $id, 'status' => 'required|in:publish,draft', 'template' => 'nullable|string',
         ]);
-
-        $validated['slug'] = Str::slug($validated['slug']);
 
         if ($request->hasFile('foto')) {
-            if ($portofolio->foto && Storage::disk('public')->exists($portofolio->foto)) {
-                Storage::disk('public')->delete($portofolio->foto);
-            }
-            $path = $request->file('foto')->store('umkm', 'public');
-            $validated['foto'] = $path;
-        }
+            if ($portofolio->foto) Storage::disk('public')->delete($portofolio->foto);
+            $validated['foto'] = $request->file('foto')->store('portofolios', 'public');
+        } else { unset($validated['foto']); }
 
         $portofolio->update($validated);
+        $portofolio->produks()->delete();
+        $portofolio->testimonials()->delete();
 
-        return redirect()->route('admin.portofolio.index')->with('success', 'Portofolio berhasil diperbarui.');
-    }
-
-    public function destroy(Portofolio $portofolio)
-    {
-        if ($portofolio->foto && Storage::disk('public')->exists($portofolio->foto)) {
-            Storage::disk('public')->delete($portofolio->foto);
+        if ($request->has('produk_nama')) {
+            foreach ($request->produk_nama as $index => $namaProduk) {
+                if (!empty($namaProduk)) {
+                    $data = ['portofolio_id' => $portofolio->id, 'nama' => $namaProduk, 'harga' => $request->produk_harga[$index] ?? 0, 'deskripsi' => $request->produk_deskripsi[$index] ?? null];
+                    if ($request->hasFile("produk_foto_$index")) $data['foto'] = $request->file("produk_foto_$index")->store('produk', 'public');
+                    Produk::create($data);
+                }
+            }
         }
 
-        $portofolio->delete();
-
-        return redirect()->route('admin.portofolio.index')->with('success', 'Portofolio berhasil dihapus.');
+        if ($request->has('testimoni_nama')) {
+            foreach ($request->testimoni_nama as $index => $namaPelanggan) {
+                if (!empty($namaPelanggan)) {
+                    $data = ['portofolio_id' => $portofolio->id, 'nama_pelanggan' => $namaPelanggan, 'jabatan' => $request->testimoni_jabatan[$index] ?? null, 'rating' => $request->testimoni_rating[$index] ?? 5, 'komentar' => $request->testimoni_komentar[$index] ?? ''];
+                    if ($request->hasFile("testimoni_foto_$index")) $data['foto'] = $request->file("testimoni_foto_$index")->store('testimoni', 'public');
+                    Testimonial::create($data);
+                }
+            }
+        }
+        return redirect()->route('admin.portofolio.index')->with('success', 'Data berhasil diupdate!');
     }
 
-    public function toggleStatus(Portofolio $portofolio)
+    public function destroy($id)
     {
-        $portofolio->update([
-            'status' => $portofolio->status === 'publish' ? 'draft' : 'publish',
-        ]);
-
-        return redirect()->back()->with('success', 'Status berhasil diubah menjadi ' . strtoupper($portofolio->status));
+        $portofolio = Portofolio::findOrFail($id);
+        if ($portofolio->foto) Storage::disk('public')->delete($portofolio->foto);
+        $portofolio->delete();
+        return redirect()->route('admin.portofolio.index')->with('success', 'Data berhasil dihapus!');
     }
 }

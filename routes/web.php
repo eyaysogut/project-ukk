@@ -5,8 +5,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PortofolioController;
 use App\Http\Controllers\PublicController;
+use App\Http\Controllers\AdminUserController;
 
-// Halaman Depan (Landing Page)
+// Halaman Depan
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
@@ -18,9 +19,18 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Area Admin (Wajib Login)
 Route::middleware('auth')->group(function () {
+    
+    // Dashboard
     Route::get('/admin', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    
+    // Profil Admin (GET untuk lihat, PUT untuk simpan)
     Route::get('/admin/profil', [AdminController::class, 'profil'])->name('admin.profil');
+    Route::put('/admin/profil', [AdminController::class, 'updateProfil'])->name('admin.profil.update');
 
+    // Manajemen Admin (Tambah/Hapus Admin)
+    Route::resource('admin/users', AdminUserController::class)->names('admin.users')->except(['show', 'edit', 'update']);
+
+    // CRUD Portofolio UMKM
     Route::resource('admin/portofolio', PortofolioController::class)->names([
         'index'   => 'admin.portofolio.index',
         'create'  => 'admin.portofolio.create',
@@ -30,8 +40,9 @@ Route::middleware('auth')->group(function () {
         'destroy' => 'admin.portofolio.destroy',
     ]);
     
+    // Toggle Publish/Unpublish
     Route::patch('admin/portofolio/{portofolio}/toggle', [PortofolioController::class, 'toggleStatus'])->name('admin.portofolio.toggle');
 });
 
-// Rute Publik (Dynamic Slug) - WAJIB PALING BAWAH
+// Rute Publik (WAJIB PALING BAWAH)
 Route::get('/{slug}', [PublicController::class, 'show'])->name('public.show');

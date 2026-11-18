@@ -41,6 +41,11 @@
                     <a href="{{ route('admin.profil') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('admin.profil') ? 'bg-emerald-700/50 text-white' : 'hover:bg-emerald-800/40 hover:text-white' }}">
                         <i class="fa-regular fa-user w-5 text-center"></i> Akun Admin
                     </a>
+                                        <a href="{{ route('admin.users.index') }}"
+                       class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors
+                              {{ request()->routeIs('admin.users.*') ? 'bg-emerald-700/50 text-white' : 'hover:bg-emerald-800/40 hover:text-white' }}">
+                        <i class="fa-solid fa-users-gear w-5 text-center"></i> Manajemen Admin
+                    </a>
                 </div>
             </div>
         </nav>
