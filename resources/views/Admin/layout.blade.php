@@ -3,74 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Dashboard Admin') — Nusarasa</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>@yield('title', 'Admin Panel') - NusaRasa</title>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style> body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; } </style>
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+        
+        /* Sidebar transition */
+        .sidebar-transition {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Overlay animation */
+        .overlay-fade {
+            transition: opacity 0.3s ease;
+        }
+    </style>
 </head>
-<body class="min-h-screen flex text-gray-800">
+<body class="bg-gray-50 text-gray-800">
 
-    <aside class="w-64 bg-[#1b4332] text-emerald-50 flex flex-col fixed h-full z-20">
-        <div class="h-20 flex items-center px-6 gap-3">
-            <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center overflow-hidden">
-                <i class="fa-solid fa-store text-emerald-800 text-xl"></i>
-            </div>
-            <span class="text-xl font-bold text-white tracking-wide">Nusarasa</span>
-        </div>
+    <div class="flex min-h-screen">
+        
+        <!-- Overlay untuk Mobile (muncul saat sidebar terbuka) -->
+        <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-30 hidden lg:hidden overlay-fade" onclick="toggleSidebar()"></div>
 
-        <nav class="flex-1 px-4 py-4 space-y-6 overflow-y-auto">
-            <div>
-                <p class="px-4 text-xs font-bold text-emerald-400/70 uppercase tracking-wider mb-2">Menu Utama</p>
-                <div class="space-y-1">
-                    <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('admin.dashboard') ? 'bg-emerald-700/50 text-white' : 'hover:bg-emerald-800/40 hover:text-white' }}">
-                        <i class="fa-solid fa-border-all w-5 text-center"></i> Dashboard
-                    </a>
-                    <a href="/" target="_blank" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors hover:bg-emerald-800/40 hover:text-white">
-                        <i class="fa-solid fa-globe w-5 text-center"></i> Lihat Website
-                    </a>
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-40 w-64 bg-emerald-900 text-white transform -translate-x-full lg:translate-x-0 sidebar-transition flex flex-col shadow-xl lg:shadow-none">
+            
+            <!-- Logo Area -->
+            <div class="p-6 border-b border-emerald-800 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm">
+                        <i class="fas fa-store text-emerald-900 text-lg"></i>
+                    </div>
+                    <span class="text-xl font-bold tracking-tight">NusaRasa</span>
                 </div>
-            </div>
-
-            <div>
-                <p class="px-4 text-xs font-bold text-emerald-400/70 uppercase tracking-wider mb-2">Kelola</p>
-                <div class="space-y-1">
-                    <a href="{{ route('admin.portofolio.create') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('admin.portofolio.create') ? 'bg-emerald-700/50 text-white' : 'hover:bg-emerald-800/40 hover:text-white' }}">
-                        <i class="fa-solid fa-plus-square w-5 text-center"></i> Tambah UMKM
-                    </a>
-                    <a href="{{ route('admin.profil') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('admin.profil') ? 'bg-emerald-700/50 text-white' : 'hover:bg-emerald-800/40 hover:text-white' }}">
-                        <i class="fa-regular fa-user w-5 text-center"></i> Akun Admin
-                    </a>
-                                        <a href="{{ route('admin.users.index') }}"
-                       class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors
-                              {{ request()->routeIs('admin.users.*') ? 'bg-emerald-700/50 text-white' : 'hover:bg-emerald-800/40 hover:text-white' }}">
-                        <i class="fa-solid fa-users-gear w-5 text-center"></i> Manajemen Admin
-                    </a>
-                </div>
-            </div>
-        </nav>
-
-        <div class="px-4 py-6 border-t border-emerald-800/50">
-            <p class="px-4 text-xs font-bold text-emerald-400/70 uppercase tracking-wider mb-2">Akun</p>
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-emerald-200 hover:bg-red-500/20 hover:text-red-300 transition">
-                    <i class="fa-solid fa-arrow-right-from-bracket w-5 text-center"></i> Logout
+                <!-- Tombol Close (hanya di mobile) -->
+                <button onclick="toggleSidebar()" class="lg:hidden text-emerald-200 hover:text-white transition">
+                    <i class="fas fa-times text-xl"></i>
                 </button>
-            </form>
-        </div>
-    </aside>
+            </div>
 
-    <div class="flex-1 ml-64 flex flex-col min-h-screen">
-        <main class="p-8 flex-1">
-            @if (session('success'))
-                <div class="mb-6 p-4 rounded-lg bg-green-50 border border-green-200 text-green-700 text-sm flex items-center gap-3">
-                    <i class="fa-solid fa-circle-check"></i> {{ session('success') }}
+            <!-- Menu Navigasi -->
+            <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
+                <p class="text-xs font-semibold text-emerald-300 uppercase tracking-wider mb-3 px-3">Menu Utama</p>
+                
+                <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg {{ request()->routeIs('admin.dashboard') ? 'bg-emerald-700 text-white shadow-sm' : 'text-emerald-100 hover:bg-emerald-800' }} transition">
+                    <i class="fas fa-th-large w-5 text-center"></i>
+                    <span class="font-medium">Dashboard</span>
+                </a>
+                
+                <a href="{{ url('/') }}" target="_blank" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-emerald-100 hover:bg-emerald-800 transition">
+                    <i class="fas fa-globe w-5 text-center"></i>
+                    <span class="font-medium">Lihat Website</span>
+                </a>
+
+                <p class="text-xs font-semibold text-emerald-300 uppercase tracking-wider mt-6 mb-3 px-3">Kelola Data</p>
+                
+                <a href="{{ route('admin.portofolio.create') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-emerald-100 hover:bg-emerald-800 transition">
+                    <i class="fas fa-plus-circle w-5 text-center"></i>
+                    <span class="font-medium">Tambah UMKM</span>
+                </a>
+
+                <p class="text-xs font-semibold text-emerald-300 uppercase tracking-wider mt-6 mb-3 px-3">Pengaturan</p>
+
+                <a href="{{ route('admin.profil') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg {{ request()->routeIs('admin.profil') ? 'bg-emerald-700 text-white shadow-sm' : 'text-emerald-100 hover:bg-emerald-800' }} transition">
+                    <i class="fas fa-user w-5 text-center"></i>
+                    <span class="font-medium">Akun Admin</span>
+                </a>
+                
+                <a href="{{ route('admin.users.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg {{ request()->routeIs('admin.users.*') ? 'bg-emerald-700 text-white shadow-sm' : 'text-emerald-100 hover:bg-emerald-800' }} transition">
+                    <i class="fas fa-users-cog w-5 text-center"></i>
+                    <span class="font-medium">Manajemen Admin</span>
+                </a>
+            </nav>
+
+            <!-- Logout (di bawah) -->
+            <div class="p-4 border-t border-emerald-800">
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-emerald-100 hover:bg-red-600 hover:text-white transition group">
+                        <i class="fas fa-sign-out-alt w-5 text-center group-hover:scale-110 transition-transform"></i>
+                        <span class="font-medium">Logout</span>
+                    </button>
+                </form>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="flex-1 flex flex-col min-w-0">
+            
+            <!-- Top Navbar (Mobile Only - untuk hamburger menu) -->
+            <header class="lg:hidden bg-white border-b border-gray-200 sticky top-0 z-20 shadow-sm">
+                <div class="px-4 py-3 flex items-center justify-between">
+                    <button onclick="toggleSidebar()" class="text-gray-700 hover:text-emerald-700 transition p-1">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-store text-emerald-700 text-sm"></i>
+                        </div>
+                        <span class="font-bold text-gray-800">NusaRasa</span>
+                    </div>
+                    <div class="w-8"></div> <!-- Spacer untuk centering -->
                 </div>
-            @endif
-            @yield('content')
-        </main>
+            </header>
+
+            <!-- Content Area -->
+            <main class="flex-1 p-4 md:p-6 lg:p-8 overflow-x-hidden">
+                @yield('content')
+            </main>
+            
+            <!-- Footer Kecil -->
+            <footer class="p-4 text-center text-xs text-gray-400 border-t border-gray-200 bg-white">
+                &copy; 2026 NusaRasa Platform. Ujian Kompetensi Keahlian RPL.
+            </footer>
+        </div>
     </div>
 
+    <!-- Script untuk Toggle Sidebar -->
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            
+            if (sidebar.classList.contains('-translate-x-full')) {
+                // Buka sidebar
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+                setTimeout(() => overlay.classList.remove('opacity-0'), 10); // Fade in
+                document.body.style.overflow = 'hidden'; // Cegah scroll body
+            } else {
+                // Tutup sidebar
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('opacity-0');
+                setTimeout(() => overlay.classList.add('hidden'), 300); // Tunggu animasi selesai
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Tutup sidebar otomatis saat resize ke desktop
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024) {
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.getElementById('sidebar-overlay');
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.add('hidden');
+                overlay.classList.add('opacity-0');
+                document.body.style.overflow = '';
+            }
+        });
+    </script>
+
+    @stack('scripts')
 </body>
 </html>

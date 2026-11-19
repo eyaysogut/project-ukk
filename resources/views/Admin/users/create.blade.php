@@ -1,43 +1,47 @@
 @extends('Admin.layout')
 
-@section('title', 'Tambah Admin Baru')
+@section('title', 'Tambah Admin')
 
 @section('content')
-    <div class="max-w-2xl mx-auto">
-        <div class="mb-4">
-            <a href="{{ route('admin.users.index') }}" class="text-emerald-700 hover:text-emerald-800 font-semibold flex items-center gap-2 transition">
-                <i class="fa-solid fa-arrow-left"></i> Kembali ke Daftar Admin
-            </a>
+<div class="max-w-xl mx-auto">
+    <h1 class="text-2xl font-bold text-gray-800 mb-6">Tambah Admin Baru</h1>
+
+    @if($errors->any())
+        <div class="mb-6 p-4 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm flex items-start gap-3">
+            <i class="fa-solid fa-circle-exclamation mt-0.5"></i>
+            <ul class="list-disc list-inside">
+                @foreach($errors->all() as $e) <li>{{ $e }}</li> @endforeach
+            </ul>
         </div>
+    @endif
 
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden p-6">
-            <h3 class="text-xl font-bold text-gray-800 mb-6">Form Tambah Admin</h3>
-
-            <form action="{{ route('admin.users.store') }}" method="POST" class="space-y-5">
-                @csrf
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Lengkap <span class="text-red-500">*</span></label>
-                    <input type="text" name="name" value="{{ old('name') }}" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none" required>
-                    @error('name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-                </div>
-
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Email <span class="text-red-500">*</span></label>
-                    <input type="email" name="email" value="{{ old('email') }}" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none" required>
-                    @error('email') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-                </div>
-
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Password <span class="text-red-500">*</span></label>
-                    <input type="password" name="password" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none" required min="6">
-                    @error('password') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-                </div>
-
-                <div class="pt-4 border-t border-gray-200 flex justify-end gap-3">
-                    <a href="{{ route('admin.users.index') }}" class="px-4 py-2 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium transition">Batal</a>
-                    <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-medium transition">Simpan Admin</button>
-                </div>
-            </form>
-        </div>
+    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 md:p-8">
+        <form action="{{ route('admin.users.store') }}" method="POST" class="space-y-5">
+            @csrf
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Nama Lengkap</label>
+                <input type="text" name="name" value="{{ old('name') }}" required class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-emerald-500 outline-none">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Email</label>
+                <input type="email" name="email" value="{{ old('email') }}" required class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-emerald-500 outline-none">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
+                <input type="password" name="password" required class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-emerald-500 outline-none">
+                <p class="text-xs text-gray-500 mt-1">Minimal 6 karakter.</p>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">Konfirmasi Password</label>
+                <input type="password" name="password_confirmation" required class="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-emerald-500 outline-none">
+            </div>
+            <div class="pt-2 flex gap-3">
+                <button type="submit" class="px-6 py-2.5 bg-emerald-600 text-white font-medium rounded-lg hover:bg-emerald-700 transition shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-save"></i> Simpan Admin
+                </button>
+                <a href="{{ route('admin.users.index') }}" class="px-6 py-2.5 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition">Batal</a>
+            </div>
+        </form>
     </div>
+</div>
 @endsection

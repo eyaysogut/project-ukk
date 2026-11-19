@@ -6,6 +6,7 @@ use App\Models\Portofolio;
 use App\Models\Produk;
 use App\Models\Testimonial;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class PortofolioController extends Controller
@@ -17,17 +18,27 @@ class PortofolioController extends Controller
         return view('Admin.admin', compact('portofolios', 'totalUmkm'));
     }
 
-    public function create() { return view('Admin.create_portofolio'); }
+    public function create() 
+    { 
+        return view('Admin.create_portofolio'); 
+    }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama_usaha' => 'required|string|max:255', 'no_wa' => 'required|string|max:20',
-            'bio' => 'nullable|string', 'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'slug' => 'required|string|unique:portofolios,slug', 'status' => 'required|in:publish,draft', 'template' => 'nullable|string',
+            'nama_usaha' => 'required|string|max:255', 
+            'no_wa' => 'required|string|max:20',
+            'bio' => 'nullable|string', 
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'slug' => 'required|string|unique:portofolios,slug', 
+            'status' => 'required|in:publish,draft', 
+            'template' => 'nullable|string',
         ]);
 
-        if ($request->hasFile('foto')) $validated['foto'] = $request->file('foto')->store('portofolios', 'public');
+        if ($request->hasFile('foto')) {
+            $validated['foto'] = $request->file('foto')->store('portofolios', 'public');
+        }
+        
         $portofolio = Portofolio::create($validated);
 
         // Simpan Produk
@@ -64,15 +75,21 @@ class PortofolioController extends Controller
     {
         $portofolio = Portofolio::findOrFail($id);
         $validated = $request->validate([
-            'nama_usaha' => 'required|string|max:255', 'no_wa' => 'required|string|max:20',
-            'bio' => 'nullable|string', 'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'slug' => 'required|string|unique:portofolios,slug,' . $id, 'status' => 'required|in:publish,draft', 'template' => 'nullable|string',
+            'nama_usaha' => 'required|string|max:255', 
+            'no_wa' => 'required|string|max:20',
+            'bio' => 'nullable|string', 
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'slug' => 'required|string|unique:portofolios,slug,' . $id, 
+            'status' => 'required|in:publish,draft', 
+            'template' => 'nullable|string',
         ]);
 
         if ($request->hasFile('foto')) {
             if ($portofolio->foto) Storage::disk('public')->delete($portofolio->foto);
             $validated['foto'] = $request->file('foto')->store('portofolios', 'public');
-        } else { unset($validated['foto']); }
+        } else { 
+            unset($validated['foto']); 
+        }
 
         $portofolio->update($validated);
         $portofolio->produks()->delete();

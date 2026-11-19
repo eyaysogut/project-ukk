@@ -5,44 +5,40 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PortofolioController;
 use App\Http\Controllers\PublicController;
-use App\Http\Controllers\AdminUserController;
 
-// Halaman Depan
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', function () { return view('welcome'); })->name('home');
 
-// Auth Admin
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.attempt');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Area Admin (Wajib Login)
 Route::middleware('auth')->group(function () {
-    
-    // Dashboard
     Route::get('/admin', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    
-    // Profil Admin (GET untuk lihat, PUT untuk simpan)
     Route::get('/admin/profil', [AdminController::class, 'profil'])->name('admin.profil');
-    Route::put('/admin/profil', [AdminController::class, 'updateProfil'])->name('admin.profil.update');
+    Route::put('/admin/profil', [AdminController::class, 'profilUpdate'])->name('admin.profil.update');
 
-    // Manajemen Admin (Tambah/Hapus Admin)
-    Route::resource('admin/users', AdminUserController::class)->names('admin.users')->except(['show', 'edit', 'update']);
+    // CRUD Manajemen Admin
+    Route::get('/admin/users', [AdminController::class, 'usersIndex'])->name('admin.users.index');
+    Route::get('/admin/users/create', [AdminController::class, 'usersCreate'])->name('admin.users.create');
+    Route::post('/admin/users', [AdminController::class, 'usersStore'])->name('admin.users.store');
+    Route::get('/admin/users/{id}/edit', [AdminController::class, 'usersEdit'])->name('admin.users.edit');
+    Route::put('/admin/users/{id}', [AdminController::class, 'usersUpdate'])->name('admin.users.update');
+    Route::delete('/admin/users/{id}', [AdminController::class, 'usersDestroy'])->name('admin.users.destroy');
 
-    // CRUD Portofolio UMKM
     Route::resource('admin/portofolio', PortofolioController::class)->names([
-        'index'   => 'admin.portofolio.index',
-        'create'  => 'admin.portofolio.create',
-        'store'   => 'admin.portofolio.store',
-        'edit'    => 'admin.portofolio.edit',
-        'update'  => 'admin.portofolio.update',
-        'destroy' => 'admin.portofolio.destroy',
+        'index' => 'admin.portofolio.index', 'create' => 'admin.portofolio.create',
+        'store' => 'admin.portofolio.store', 'edit' => 'admin.portofolio.edit',
+        'update' => 'admin.portofolio.update', 'destroy' => 'admin.portofolio.destroy',
     ]);
-    
-    // Toggle Publish/Unpublish
-    Route::patch('admin/portofolio/{portofolio}/toggle', [PortofolioController::class, 'toggleStatus'])->name('admin.portofolio.toggle');
 });
 
-// Rute Publik (WAJIB PALING BAWAH)
+Route::get('/demo/{template}', function ($template) {
+    abort_unless(in_array($template, ['template1', 'template2']), 404);
+    $portofolio = (new \App\Models\Portofolio)->forceFill([
+        'nama_usaha' => 'NusaRasa Demo', 'bio' => 'Contoh tampilan website.',
+        'no_wa' => '6281234567890', 'template' => $template,
+    ]);
+    return view('Template.' . $template, compact('portofolio'));
+})->name('demo');
+
 Route::get('/{slug}', [PublicController::class, 'show'])->name('public.show');
